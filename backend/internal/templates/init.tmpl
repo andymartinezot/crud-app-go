@@ -1,0 +1,41 @@
+{{ define "init" }}
+{{ template "header" }}
+
+      <a name="" id="" class="btn btn-primary" href="/create" role="button">Add employee</a>
+<br/><br/>
+
+      <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+      {{ range.}}
+            <tr>
+                <td> {{.Id}} </td>
+                <td> {{.Name}} </td>
+                <td> {{.Email}} </td>                
+                <td> 
+                <a name="" id="" class="btn btn-warning" href="/update?id={{.Id}}" role="button">Update</a>
+                |
+                <a name="" id="" class="btn btn-danger" href="#" role="button" onclick="confirmDelete('{{.Id}}')">Delete</a>
+
+                <script>
+                    function confirmDelete(id) {
+                        if (confirm('Are you sure you want to delete this item?')) {
+                            window.location.href = '/delete?id=' + id;
+                        }
+                    }
+                </script>
+                 
+                 </td>
+            </tr>
+      {{end}}
+        </tbody>
+      </table>
+{{ template "footer" }}
+{{end}}
