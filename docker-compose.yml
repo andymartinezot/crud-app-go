@@ -1,20 +1,30 @@
-# Use root/example as user/password credentials
 version: '3.1'
 
 services:
-
   db:
-    container_name: mysql-container
     image: mysql
     restart: always
     environment:
+      MYSQL_ROOT_PASSWORD: password123
       MYSQL_DATABASE: 'system'
       MYSQL_USER: 'user123'
       MYSQL_PASSWORD: 'password123'
-      MYSQL_ROOT_PASSWORD: 'password123'
     ports:
-      # <Port exposed> : < MySQL Port running inside container>
-      - '3306:3306'
+      - "3306:3306"
     expose:
       # Opens port 3306 on the container
       - '3306'
+    volumes:
+      - db-data:/var/lib/mysql
+
+  app:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+
+volumes:
+  db-data:
