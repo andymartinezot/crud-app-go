@@ -30,3 +30,37 @@ This is a simple CRUD application written in Go. It uses MySQL as the database a
     ├── init.sql
     └── .env
 ```
+
+## Prerequisites
+
+- Docker
+- Docker Compose
+
+## Environment Variables
+
+Create a `.env` file in the project root directory with the following content:
+
+```env
+DB_HOST=db
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=password123
+DB_NAME=system
+MYSQL_ROOT_PASSWORD=password123
+MYSQL_DATABASE=system
+```
+
+## Initialization Script
+
+Create an init.sql file in the project root directory with the following content to ensure the employees table exists:
+
+CREATE DATABASE IF NOT EXISTS system;
+USE system;
+
+```
+CREATE TABLE IF NOT EXISTS employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+```
