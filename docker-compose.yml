@@ -4,11 +4,8 @@ services:
   db:
     image: mysql
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password123
-      MYSQL_DATABASE: 'system'
-      MYSQL_USER: 'user123'
-      MYSQL_PASSWORD: 'password123'
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     expose:
@@ -16,6 +13,7 @@ services:
       - '3306'
     volumes:
       - db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   app:
     build: ./backend
@@ -24,7 +22,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./backend/.env
+      - .env
 
 volumes:
   db-data:
