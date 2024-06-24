@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"database/sql"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -11,7 +9,7 @@ import (
 	"github.com/andymartinezot/crud-app-go/backend/internal/models"
 )
 
-var templates = template.Must(template.ParseGlob("internal/templates/*"))
+var templates = template.Must(template.ParseGlob("../../internal/templates/*"))
 
 func Initiate(w http.ResponseWriter, r *http.Request) {
 	setConnection := config.ConnectionDB()
@@ -62,7 +60,20 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		insertRecords.Exec(name, email)
+		//insertRecords.Exec(name, email)
+		result, err := insertRecords.Exec(name, email)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		id, err := result.LastInsertId()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		log.Printf("New user added. ID: %v", id)
 
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
@@ -113,7 +124,23 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		updateRecord.Exec(name, email, id)
+		result, err := updateRecord.Exec(name, email, id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if rowsAffected > 0 {
+			log.Printf("Record with ID %v updated. %v rows affected.", id, rowsAffected)
+		} else {
+			log.Printf("No record found with ID %v to update.", id)
+		}
 
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
@@ -129,7 +156,23 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	deleteRecords.Exec(idEmployee)
+	result, err := deleteRecords.Exec(idEmployee)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if rowsAffected > 0 {
+		log.Printf("Record with ID %v deleted. %v rows affected.", idEmployee, rowsAffected)
+	} else {
+		log.Printf("No record found with ID %v to delete.", idEmployee)
+	}
 
 	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
