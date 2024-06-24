@@ -3,7 +3,7 @@
 This is a simple CRUD application written in Go. It uses MySQL as the database and Docker Compose for container orchestration.
 
 ## Project Structure
-    ```
+```
     /Users/andymartinez/go/src/github.com/andymartinezot/crud-app-go/backend/
     ├── cmd
     │ └── server
@@ -28,4 +28,4 @@ This is a simple CRUD application written in Go. It uses MySQL as the database a
     └── Dockerfile
     └── docker-compose.yml
     └── .env
-    ```
+```
