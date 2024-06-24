@@ -4,12 +4,22 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/andymartinezot/crud-app-go/backend/config"
 	"github.com/andymartinezot/crud-app-go/backend/internal/models"
 )
 
-var templates = template.Must(template.ParseGlob("../../internal/templates/*"))
+var templates *template.Template
+
+func init() {
+	// Get the absolute path to the templates directory
+	templatesDir := filepath.Join("/app", "internal", "templates", "*")
+	// Parse the templates
+	templates = template.Must(template.ParseGlob(templatesDir))
+}
+
+//var templates = template.Must(template.ParseGlob("../../internal/templates/*"))
 
 func Initiate(w http.ResponseWriter, r *http.Request) {
 	setConnection := config.ConnectionDB()

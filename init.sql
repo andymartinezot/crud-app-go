@@ -1,0 +1,8 @@
+CREATE DATABASE IF NOT EXISTS system;
+USE system;
+
+CREATE TABLE IF NOT EXISTS employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(64),
+    email VARCHAR(64)
+);
