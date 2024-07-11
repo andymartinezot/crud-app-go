@@ -74,7 +74,7 @@ To build and run the application with Docker Compose, follow these steps:
 
 2. Build and start the services:
 ```
-    docker-compose ps
+    docker-compose up
 ```
 
 You should see output indicating that both the db and app services are running.
