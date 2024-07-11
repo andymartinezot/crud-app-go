@@ -1,4 +1,3 @@
-CREATE DATABASE IF NOT EXISTS system;
 USE system;
 
 CREATE TABLE IF NOT EXISTS employees (
